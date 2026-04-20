@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple List App</title>
+    <link rel="shortcut icon" href="logo2.png" type="image/x-icon">
+    <style>
+        /* Add your CSS styles here after completing the exercise*/
+
+        body{
+       /* margin-left: 25%;
+       margin-right: 25%; */
+       background: #f0f0f0;
+        }
+
+        h1{
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 1000;
+            text-transform: uppercase;
+            color: #0076ff;
+            padding-top: 20px;
+        }
+
+        #add-button{
+            color: #ffff;
+            border: 1px solid #0076ff;
+            cursor: pointer;
+            outline: none;
+            height: 5vh;
+            box-sizing: border-box;
+            position: relative;
+            right: 8px;
+            border-left: none;
+            background: #0076ff;
+            border-radius: 4px;
+            
+        }
+
+        #input-text{
+            border: 1px solid #0076ff;
+            outline: none;
+            width: 20vw;
+            height: 25px;
+            border-radius: 4px;
+            
+        }
+
+        h2{
+font-family: 'Courier New', Courier, monospace;
+            font-weight: 1000;
+            text-transform: uppercase;
+            color: #0076ff;
+        
+        }
+
+        #container{
+            text-align: center;
+            width: 100%;
+            align-items: center;
+            background: #fff;
+            max-width: 400px;
+            position: absolute;
+            left: 35%;
+            top: 20%;
+            border-radius: 10px;
+        }
+
+        ul{
+            list-style: none;
+            
+        }
+
+        li{
+            background: #eeeeee;
+            border: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            color: #0076ff;
+            font-size: 20px;
+            font-weight: 500;
+            font-style: normal;
+            font-family: Arial, Helvetica, sans-serif;
+            position: relative;
+            right: 17px;
+
+        }
+
+
+       li .remove{
+            display: flex;
+            justify-content: right;
+            background: #0076ff;
+            border-radius: 7px;
+            border: none;
+            color: #ffff;
+            font-size: 18px;
+            margin-left: 10px;
+            outline: none;
+            cursor: pointer;
+            height: 5vh;
+            text-align: center;
+            padding-top: 4px;
+            font-weight: lighter;
+            
+            
+            
+        }
+
+        #darkMode{
+            margin-top: 20px;
+            margin-bottom: 20px;
+            position: absolute;
+            right: 15%;
+            border-radius: 4px;
+            background: #0076ff;
+            color: #ffff;
+            border: none;
+            padding-bottom: 4px;
+            padding-top: 4px;
+            cursor: pointer;
+        }
+
+        .dark{
+          background: black;  
+        }
+
+        @media (max-width: 500px)  {
+          
+        
+         li{
+        
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            right: 20px;
+        
+        }
+
+
+          #container{
+     width: 100%;
+        margin: 50px auto;
+        position: absolute;
+        left: 30px;
+        top: 7%;
+        }
+
+        
+         #input-text{
+            border: 1px solid #0076ff;
+            outline: none;
+            width: 50vw;
+            height: 25px;
+            
+        }
+
+
+        }
+
+
+
+         @media (max-width: 281px)  {
+          
+        
+         li{
+        
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            right: 20px;
+        
+        }
+
+
+          #container{
+     width: 100%;
+        margin: 50px auto;
+        position: absolute;
+        left: 0px;
+        top: 7%;
+        }
+
+        
+         #input-text{
+            border: 1px solid #0076ff;
+            outline: none;
+            width: 50vw;
+            height: 25px;
+            
+        }
+
+
+        }
+
+    </style>
+</head>
+<body>
+
+    
+
+    <!-- Text box and button -->
+    <div id="container">
+        <button id="darkMode">Dark mode</button>
+<h1>Simple List App</h1>
+
+        <input type="text" id="input-text" placeholder="Enter item">
+        <button id="add-button">Add</button>
+
+        <h2>Added List:</h2>
+    <ul id="list-container"></ul>
+    </div>
+
+    
+
+    <script>
+
+document.addEventListener('DOMContentLoaded', () => {
+
+const darkMode = document.getElementById('darkMode');
+
+const body = document.querySelector('body');
+
+const div = document.getElementById('container');
+
+const ul = document.getElementById('list-container');
+const inputText = document.getElementById('input-text');
+
+const load = () => {
+    const storedTask = JSON.parse(localStorage.getItem('task') || '[]');
+    storedTask.forEach(text => add(text, false))
+
+}
+
+const add = (text = inputText.value.trim(), save = true) => {
+
+
+if (text === '') {
+    alert('Enter item');
+    return;
+}
+
+const li = document.createElement('li');
+
+
+li.textContent = text;
+ul.appendChild(li);
+
+
+
+
+
+const removeButton = document.createElement('button');
+li.appendChild(removeButton);
+removeButton.innerText = 'Remove';
+
+removeButton.className = 'remove';
+
+removeButton.onclick = () => {
+    li.remove();
+
+    let storedTask = JSON.parse(localStorage.getItem('task') || '[]');
+    storedTask = storedTask.filter(task => task !== text);
+    localStorage.setItem('task', JSON.stringify(storedTask));
+}
+
+
+
+if(save) {
+    const storedTask = JSON.parse(localStorage.getItem('task') || '[]');
+storedTask.push(text);
+localStorage.setItem('task', JSON.stringify(storedTask));
+}
+ 
+}
+
+
+load()
+
+document.getElementById('add-button').addEventListener('click', () => {
+    add();
+})
+
+darkMode.addEventListener('click', () => {
+ body.classList.toggle('dark');
+ div.classList.toggle('dark');
+})
+
+
+})
+    </script>
+</body>
+</html>
